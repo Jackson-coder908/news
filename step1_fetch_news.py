@@ -3,10 +3,14 @@ Step 1: Fetch live news headlines from NewsAPI.
 Goal: prove we can pull real, current articles before touching any AI/embedding stuff.
 """
 
+import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()  # reads variables from a local .env file
 
 # ---- CONFIG ----
-NEWSAPI_KEY = "fa079c0d13774a38809346cdd01e3524"   # from https://newsapi.org
+NEWSAPI_KEY = os.getenv("NEWSAPI_KEY")
 QUERY = "technology"                   # topic to search for
 PAGE_SIZE = 10                         # how many articles to fetch
 
@@ -29,8 +33,8 @@ def fetch_news(query: str, api_key: str, page_size: int = 10):
 
 
 def main():
-    if NEWSAPI_KEY == "PASTE_YOUR_KEY_HERE":
-        print("⚠️  Please paste your NewsAPI key into NEWSAPI_KEY before running.")
+    if not NEWSAPI_KEY:
+        print("please check .env file with NEWSAPI_KEY=your_key")
         return
 
     articles = fetch_news(QUERY, NEWSAPI_KEY, PAGE_SIZE)
